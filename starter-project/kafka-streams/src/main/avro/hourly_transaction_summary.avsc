@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "HourlyTransactionSummary",
+  "namespace": "com.example.avro",
+  "fields": [
+    {"name": "user_id", "type": "int"},
+    {"name": "hour", "type": "string" },
+    {"name": "transaction_count", "type": "int" },
+    {"name": "transaction_total_amount", "type": "double"}
+  ]
+}

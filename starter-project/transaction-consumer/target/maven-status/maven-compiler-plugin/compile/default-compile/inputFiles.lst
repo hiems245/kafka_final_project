@@ -1,0 +1,8 @@
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/Status.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/Transaction.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/com/example/transaction_consumer/TransactionConsumerApplication.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/com/example/transaction_consumer/config/KafkaConfig.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/com/example/transaction_consumer/controller/FraudAlertController.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/com/example/transaction_consumer/model/Status.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/com/example/transaction_consumer/model/Transaction.java
+/Users/memberid/Documents/kafka/kafka-hacktiv8/final-project/starter-project/transaction-consumer/src/main/java/com/example/transaction_consumer/service/FraudDetectionService.java
