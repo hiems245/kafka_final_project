@@ -1,0 +1,321 @@
+services:
+  zookeeper1:
+    image: confluentinc/cp-zookeeper:7.6.0
+    hostname: zookeeper1
+    container_name: zookeeper1
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
+    networks:
+      - kafka-network
+
+  zookeeper2:
+    image: confluentinc/cp-zookeeper:7.6.0
+    hostname: zookeeper2
+    container_name: zookeeper2
+    ports:
+      - "2182:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 2
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
+    networks:
+      - kafka-network
+
+  zookeeper3:
+    image: confluentinc/cp-zookeeper:7.6.0
+    hostname: zookeeper3
+    container_name: zookeeper3
+    ports:
+      - "2183:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 3
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888;zookeeper3:2888:3888
+    networks:
+      - kafka-network
+
+  kafka1:
+    image: confluentinc/cp-kafka:7.6.0
+    hostname: kafka1
+    container_name: kafka1
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+      - "9992:9992"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_BROKER_RACK: kafka1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_JMX_PORT: 9991 # Let Confluent handle it
+      KAFKA_JMX_HOSTNAME: 0.0.0.0 # Or the container's internal IP/hostname if specific
+      KAFKA_JMX_OPTS: >
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=9992
+        -Dcom.sun.management.jmxremote.rmi.port=19992
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=localhost
+        -javaagent:/jmx/jmx_prometheus_javaagent-1.0.1.jar=9992:/jmx/kafka-2_0_0.yml
+    volumes:
+      - /Users/himawansaputrautama/Documents/Training/kafka/16/file-config/jmx-exporter:/jmx
+
+    networks:
+      - kafka-network
+      
+  kafka2:
+    image: confluentinc/cp-kafka:7.6.0
+    hostname: kafka2
+    container_name: kafka2
+    ports:
+      - "9093:9093"
+      - "29093:29093"
+      - "9994:9994"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_BROKER_RACK: kafka2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9093,PLAINTEXT_HOST://localhost:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_JMX_PORT: 9993
+      KAFKA_JMX_HOSTNAME: 0.0.0.0 
+      KAFKA_JMX_OPTS: >
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=9994
+        -Dcom.sun.management.jmxremote.rmi.port=19994
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=localhost
+        -javaagent:/jmx/jmx_prometheus_javaagent-1.0.1.jar=9994:/jmx/kafka-2_0_0.yml
+
+    volumes:
+      - /Users/himawansaputrautama/Documents/Training/kafka/16/file-config/jmx-exporter:/jmx
+
+    networks:
+      - kafka-network
+
+  kafka3:
+    image: confluentinc/cp-kafka:7.6.0
+    hostname: kafka3
+    container_name: kafka3
+    ports:
+      - "9094:9094"
+      - "29094:29094"
+      - "9996:9996"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_BROKER_RACK: kafka3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9094,PLAINTEXT_HOST://localhost:29094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_JMX_PORT: 9995
+      KAFKA_JMX_HOSTNAME: 0.0.0.0 
+      KAFKA_JMX_OPTS: >
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=9996
+        -Dcom.sun.management.jmxremote.rmi.port=19996
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=localhost
+        -javaagent:/jmx/jmx_prometheus_javaagent-1.0.1.jar=9996:/jmx/kafka-2_0_0.yml
+    volumes:
+      - /Users/himawansaputrautama/Documents/Training/kafka/16/file-config/jmx-exporter:/jmx
+
+    networks:
+      - kafka-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - kafka-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - kafka-network
+
+  # mysql:  
+  #   image: debezium/example-mysql:1.9
+  #   hostname: mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: debezium
+  #     MYSQL_USER: debezium
+  #     MYSQL_PASSWORD: dbz
+  #   ports:
+  #     - "3306:3306"
+  #   command: [
+  #     "mysqld",
+  #     "--server-id=223344",
+  #     "--log-bin=mysql-bin",
+  #     "--binlog-format=ROW",
+  #     "--gtid-mode=ON",
+  #     "--enforce-gtid-consistency=ON"]
+  #   networks:
+  #     - kafka-network
+
+  mysql:
+    image: arm64v8/mysql:8.0
+    platform: linux/arm64
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: debezium
+      MYSQL_USER: debezium
+      MYSQL_PASSWORD: dbz
+    volumes:
+      - ./custom-mysql.cnf:/etc/mysql/conf.d/custom.cnf
+    ports:
+      - "3306:3306"
+    networks:
+      - kafka-network
+
+  # kafka-connect:
+  #   build: .
+  #   depends_on:
+  #     - kafka1
+  #     - kafka2
+  #     - kafka3
+  #     - schema-registry
+  #     - mysql
+  #     - elasticsearch
+  #   ports:
+  #     - "8083:8083"
+  #   environment:
+  #     CONNECT_REST_ADVERTISED_HOST_NAME: "localhost"
+  #     CONNECT_BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9093,kafka3:9094
+  #     CONNECT_REST_PORT: 8083
+  #     CONNECT_GROUP_ID: connect-cluster-2
+  #     CONNECT_CONFIG_STORAGE_TOPIC: "connect-configs"
+  #     CONNECT_OFFSET_STORAGE_TOPIC: "connect-offsets"
+  #     CONNECT_STATUS_STORAGE_TOPIC: "connect-status"
+  #     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+  #     CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+  #     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+  #     CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+  #     CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+  #     CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+  #     CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+  #     CONNECT_LOG4J_ROOT_LOGLEVEL: "INFO"
+  #     CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"  
+  #     CONNECT_ADMIN_CLIENT_REQUEST_TIMEOUT_MS: 30000
+  #   volumes:
+  #     - ./:/usr/share/confluent-hub-components
+  #   networks:
+  #     - kafka-network
+
+  kafka-connect:
+    image: debezium/connect:2.6
+    platform: linux/arm64
+    ports:
+      - "8083:8083"
+    depends_on:
+        - kafka1
+        - kafka2
+        - kafka3
+        - schema-registry
+        - mysql
+        - elasticsearch
+    volumes:
+        - ./plugins:/kafka/connect-plugins
+    environment:
+      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      BOOTSTRAP_SERVERS: kafka1:9092,kafka2:9093,kafka3:9094
+      GROUP_ID: connect-cluster
+      CONFIG_STORAGE_TOPIC: "connect-configs"
+      OFFSET_STORAGE_TOPIC: "connect-offsets"
+      STATUS_STORAGE_TOPIC: "connect-status"
+      KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_PLUGIN_PATH: /kafka/connect,/kafka/connect-plugins
+    networks:
+      - kafka-network
+
+  elasticsearch:
+    image: bitnami/elasticsearch:8.13.0
+    container_name: elasticsearch
+    platform: linux/arm64
+    environment:
+      - ELASTICSEARCH_ENABLE_SECURITY=false
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - kafka-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.7
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    networks:
+      - kafka-network
+      
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9092,kafka2:9093,kafka3:9094
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: connect
+      KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: http://kafka-connect:8083
+    networks:
+      - kafka-network
+  
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.6.0
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: "PLAINTEXT://kafka1:9092,PLAINTEXT://kafka2:9093,PLAINTEXT://kafka3:9094"
+      SCHEMA_REGISTRY_HOST_NAME: "schema-registry"
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+    networks:
+      - kafka-network
+
+volumes:
+  grafana-data:
+
+networks:
+  kafka-network:
+    driver: bridge

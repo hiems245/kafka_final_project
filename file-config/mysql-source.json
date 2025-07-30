@@ -1,0 +1,41 @@
+{
+  "name": "mysql-source",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:mysql://localhost:3306/kafka",
+    "connection.user": "root",
+    "connection.password": "",
+    "table.whitelist": "kafka",
+    "mode": "incrementing",
+    "incrementing.column.name": "id",
+    "topic.prefix": "mysql-",
+    "tasks.max": "1",
+    "poll.interval.ms": "5000",
+    "table.name.format": "hourly_summary",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "insert.mode": "insert",
+    "pk.mode": "none",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "true"
+  }
+}
+
+POST http://localhost:8085/connectors
+Content-Type: application/json
+
+{
+  "name": "mysql-source",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:mysql://localhost:3306/kafka",
+    "connection.user": "root",
+    "connection.password": "",
+    "table.name.format": "hourly_summary",
+    "auto.create": "true",
+    "auto.evolve": "true",
+    "insert.mode": "insert",
+    "topics": "hourly-transaction-topic"
+  }
+}

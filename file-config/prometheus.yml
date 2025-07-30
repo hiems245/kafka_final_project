@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'kafka'
+    static_configs:
+      - targets:
+        - 'kafka1:9992'
+        - 'kafka2:9994'
+        - 'kafka3:9996'
+
+  - job_name: 'zookeeper'
+    static_configs:
+      - targets:
+        - 'zookeeper1:7070'
+        - 'zookeeper2:7070'
+        - 'zookeeper3:7070'

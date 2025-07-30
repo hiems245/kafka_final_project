@@ -1,0 +1,14 @@
+{
+  "name": "elasticsearch-sink-avro",
+  "config": {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "topics": "hourly-transaction-topic",
+    "connection.url": "http://elasticsearch:9200",
+    "type.name": "_doc",
+    "key.ignore": true,
+    "schema.ignore": false,
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "tasks.max": "1"
+  }
+}

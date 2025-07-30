@@ -1,0 +1,16 @@
+{
+  "name": "mysql-sink",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:mysql://mysql:3306/kafka_final",
+    "connection.user": "root",
+    "connection.password": "debezium",
+    "table.name.format": "hourly_transaction_summary",
+    "topics": "hourly-transaction-summary-topic",
+    "pk.mode": "record_value",
+    "pk.fields": "hour,userId",
+    "insert.mode": "upsert",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
+  }
+}
